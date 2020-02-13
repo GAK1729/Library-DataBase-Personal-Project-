@@ -10,7 +10,7 @@ from sqlalchemy import and_, or_
 
 app = Flask(__name__)
 
-db_string = 'postgres+psycopg2://postgres:dking17post29@localhost:1234/project1'
+db_string = 'postgres+psycopg2://postgres:password@localhost:1234/project1'
 engine = create_engine(db_string)
 
 db = scoped_session(sessionmaker(bind=engine))
