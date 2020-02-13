@@ -1,0 +1,234 @@
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+import csv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+import copy
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres+psycopg2://postgres:danielking17post29@localhost:1234/project1'
+db = SQLAlchemy(app)
+
+
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(80), unique=True, nullable=False)
+#     email = db.Column(db.String(120), unique=True, nullable=False)
+#
+#
+#     def __repr__(self):
+#         return '<User %r>' % self.username
+
+class booksdb(db.Model):
+    __tablename__ = "booksdb"
+    isbn = db.Column(db.String, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    author = db.Column(db.String, nullable=False)
+    year = db.Column(db.Integer, nullable=False)
+
+# db.init_app(app)
+
+
+
+
+class readerdb(db.Model):
+    __tablename__ = "readerdb"
+    user_id = db.Column(db.String, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    # books = db.Column(db.String[], nullable=True)
+    # flight_id = db.Column(db.Integer, db.ForeignKey("flights.id"), nullable=False)
+    # books_r = db.relationship("booksdb", backref="flight", lazy=True)
+
+    def add_book(self, isbn, title, author, year):
+        b = booksdb(isbn=isbn, title=title, author=author, year=year)
+        db.session.add(b)
+        db.session.commit()
+
+
+# db.create_all()
+
+db_string = 'postgres+psycopg2://postgres:danielking17post29@localhost:1234/project1'
+engine = create_engine(db_string)
+db = scoped_session(sessionmaker(bind=engine))
+
+
+f = open("books.csv")
+reader_x = csv.reader(f)
+copy_reader = list(reader_x)
+print(copy_reader)
+my_list = []
+q=1
+my_list = []
+for i in copy_reader:
+    if (i[3]=="year"):
+        continue
+    # temp = int(copy_reader[q][3])
+    temp = (int(i[3]))
+    # print(temp)
+    q += 1
+    my_list.append(temp)
+    # print( temp )
+    # print(len(my_list))
+print(12433242343423423)
+print(my_list)
+
+def main():
+    f = open("books.csv")
+    reader_Y = csv.reader(f)
+    reader = csv.reader(f)
+    # print(f"length of csv = {len(list(reader))}")
+    count = 0
+    i = 0
+    for isbn, title, author, year in reader:
+        year = my_list[i]
+        print(f"count = {count}")
+        count += 1
+        print(f"{type(isbn)}, {type(title)}, {type(author)}, {type(year)}.")
+        print(f"{isbn}, {title}, {author}, {year}.")
+        i += 1
+
+        db.add(booksdb(isbn=isbn, title=title, author=author, year=year))
+
+        # book = booksdb(isbn=isbn, title=title, author=author, year=int(year))
+        # db.add(book)
+        db.commit()
+
+
+    db.commit()
+
+
+
+print(58)
+
+# db_string = 'postgres+psycopg2://postgres:danielking17post29@localhost:1234/project1'
+# engine = create_engine(db_string)
+# db = scoped_session(sessionmaker(bind=engine))
+# 0380795272,Krondor: The Betrayal,Raymond E. Feist,1998
+
+# db.add(booksdb(isbn="0380795272", title="Krondor: The Betrayal", author=",Raymond E. Feist", year=1998))
+# db.delete( db.query(booksdb).filter_by(isbn="0380795272").first() )
+
+
+main()
+
+book = booksdb(isbn="0380795272", title="Krondor: The Betrayal", author=",Raymond E. Feist", year="1998")
+print(book.title)
+
+# db.add(book)
+# db.delete( db.query(booksdb).filter_by(isbn="0380795272").first() )
+
+db.commit()
+print(63)
+# a = "1999"
+# print(type(int(a)))
+
+
+
+
+
+# my_list = []
+# my_list.append(1)
+# print(my_list)
+
+
+# header = next(reader)
+# for row in reader:
+#     rows = [header] + [[row[0], [row[1], [row[2], int(row[3])]
+#     # print(next(reader))
+#
+# for row in rows:
+#     print (row)
+
+# for row in reader:
+#     row['year'] = int(row['year'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import os
+#
+# from flask import Flask, render_template, request
+# # from models import *
+#
+# from flask_sqlalchemy import SQLAlchemy
+#
+#
+#
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import scoped_session, sessionmaker
+# # =============================================================================
+# #
+# # =============================================================================
+#
+#
+# db = SQLAlchemy()
+#
+# class Flight(db.Model):
+#     __tablename__ = "flights"
+#     id = db.Column(db.Integer, primary_key=True)
+#     origin = db.Column(db.String, nullable=False)
+#     destination = db.Column(db.String, nullable=False)
+#     duration = db.Column(db.Integer, nullable=False)
+#
+#
+# class Passenger(db.Model):
+#     __tablename__ = "passengers"
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String, nullable=False)
+#     flight_id = db.Column(db.Integer, db.ForeignKey("flights.id"), nullable=False)
+#
+# app = Flask(__name__)
+# # =============================================================================
+# #
+# # =============================================================================
+#
+#
+# ## Aero_Application.py
+# # db_string = 'postgres+psycopg2://postgres:danielking17post29@localhost:1234/mappingdb'
+# # engine = create_engine(db_string)
+# # notDB = scoped_session(sessionmaker(bind=engine))
+#
+# ## create.py
+# # app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+# # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# # db.init_app(app)
+#
+# ## https://stackoverflow.com/questions/20744277/sqlalchemy-create-all-does-not-create-tables
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres+psycopg2://postgres:danielking17post29@localhost:1234/mappingdb'
+# db = SQLAlchemy(app)
+#
+# # =============================================================================
+# #
+# # =============================================================================
+#
+# def main():
+#     db.create_all()
+#
+# if __name__ == "__main__":
+#     with app.app_context():
+#         main()
