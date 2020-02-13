@@ -6,7 +6,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 import copy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres+psycopg2://postgres:danielking17post29@localhost:1234/project1'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres+psycopg2://postgres:password@localhost:1234/project1'
 db = SQLAlchemy(app)
 
 
